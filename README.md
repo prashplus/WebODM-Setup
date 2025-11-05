@@ -1,6 +1,8 @@
 # WebODM Setup for Drone Video Processing
 
-A comprehensive setup repository for WebODM installation and drone video processing workflows. This repository contains installation scripts, Docker configurations, and utilities for processing drone imagery and videos.
+A comprehensive setup repository for WebODM installation and drone video processing workflows with **GPU acceleration support**. This repository contains installation scripts, Docker configurations, and utilities for processing drone imagery and videos.
+
+> ⚡ **NEW**: Now includes GPU acceleration for 2-5x faster processing! See [GPU_SETUP.md](GPU_SETUP.md) for details.
 
 ## 📋 Table of Contents
 

@@ -12,6 +12,7 @@ This guide explains how to enable and use GPU acceleration with WebODM for faste
 ### Your Current Hardware
 
 Based on detection:
+
 - GPU: NVIDIA GeForce RTX 4060
 - VRAM: 8GB
 - CUDA Version: 13.0
@@ -22,19 +23,20 @@ Based on detection:
 ### Windows
 
 1. **Install NVIDIA drivers** (latest version)
-   - Download from: https://www.nvidia.com/Download/index.aspx
+   - Download from: <https://www.nvidia.com/Download/index.aspx>
 
 2. **Install NVIDIA Container Toolkit for Docker Desktop**
-   
+
    Docker Desktop on Windows with WSL2 backend supports GPU:
-   
+
    a. Ensure WSL2 is installed and configured
    b. Update Docker Desktop to latest version
    c. In Docker Desktop settings:
       - Go to **Settings** → **Resources** → **WSL Integration**
       - Enable integration with your WSL2 distro
-   
+
    d. Install NVIDIA Container Toolkit in WSL2:
+
    ```bash
    # Inside WSL2 terminal
    distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
@@ -47,6 +49,7 @@ Based on detection:
    ```
 
 3. **Verify GPU is accessible**:
+
    ```bash
    docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
    ```
@@ -54,12 +57,14 @@ Based on detection:
 ### Linux
 
 1. **Install NVIDIA drivers**:
+
    ```bash
    sudo apt update
    sudo apt install nvidia-driver-<version>
    ```
 
 2. **Install NVIDIA Container Toolkit**:
+
    ```bash
    distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
    curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
@@ -71,6 +76,7 @@ Based on detection:
    ```
 
 3. **Verify**:
+
    ```bash
    docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
    ```
@@ -79,7 +85,7 @@ Based on detection:
 
 The docker-compose.yml has been configured to use GPU acceleration:
 
-### Changes Made:
+### Changes Made
 
 1. **NodeODM image changed** from `opendronemap/nodeodm:latest` to `opendronemap/nodeodm:gpu`
 2. **GPU environment variable** added: `GPU_ENABLED=true`
@@ -156,12 +162,14 @@ These work well with GPU acceleration.
 ### During Processing
 
 **PowerShell (Windows)**:
+
 ```powershell
 # Watch GPU usage in real-time
 while ($true) { Clear-Host; nvidia-smi; Start-Sleep -Seconds 2 }
 ```
 
 **Linux/macOS**:
+
 ```bash
 watch -n 2 nvidia-smi
 ```
@@ -169,6 +177,7 @@ watch -n 2 nvidia-smi
 ### Expected GPU Utilization
 
 During active processing:
+
 - GPU Utilization: 70-100%
 - VRAM Usage: 2-6GB (varies by dataset)
 - GPU Temperature: Should stay below 80°C
@@ -178,16 +187,19 @@ During active processing:
 ### GPU Not Detected
 
 1. **Check NVIDIA driver**:
+
    ```bash
    nvidia-smi
    ```
 
 2. **Verify Docker GPU support**:
+
    ```bash
    docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
    ```
 
 3. **Check NodeODM logs**:
+
    ```bash
    docker-compose logs node-odm-1
    ```
@@ -217,6 +229,7 @@ To disable GPU and use CPU only:
    - Remove `deploy` section
 
 2. Restart:
+
    ```bash
    docker-compose down
    docker-compose up -d
@@ -233,6 +246,7 @@ To disable GPU and use CPU only:
 ## 🎯 Optimal Settings for Your RTX 4060
 
 With 8GB VRAM, you can handle:
+
 - **Small datasets**: Up to 500 images (20MP)
 - **Medium datasets**: 200-300 images (20MP)
 - **Large datasets**: Use split option for 500+ images
