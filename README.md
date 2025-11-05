@@ -1,326 +1,314 @@
-# 🚀 WebODM Setup Repository
+# WebODM Setup for Drone Video Processing
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)
+A comprehensive setup repository for WebODM installation and drone video processing workflows. This repository contains installation scripts, Docker configurations, and utilities for processing drone imagery and videos.
 
-**Complete setup repository for WebODM installation and drone video processing workflows.**
+## 📋 Table of Contents
 
-This repository provides everything you need to set up WebODM for drone photogrammetry, including automated installation scripts, Docker configurations, and powerful video frame extraction tools.
+- [Overview](#overview)
+- [Prerequisites](#prerequisites)
+- [Quick Start](#quick-start)
+- [Installation](#installation)
+- [Drone Video Processing](#drone-video-processing)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [License](#license)
 
----
+## 🎯 Overview
 
-## ✨ What's Included
+WebODM is an open-source drone mapping software built on OpenDroneMap. This repository provides:
 
-### 📦 Core Components
-- **Docker Compose Configuration** - Production-ready WebODM deployment
-- **Installation Scripts** - Automated setup for Windows, Linux, and macOS
-- **Management Scripts** - Start, stop, update, and maintain WebODM
-- **Configuration Files** - Pre-configured settings and processing presets
+- **Automated Installation Scripts** for Windows, Linux, and macOS
+- **Docker Compose Configuration** for easy deployment
+- **Video Processing Tools** to extract frames from drone videos
+- **Batch Processing Scripts** for multiple datasets
+- **Utility Scripts** for common tasks
 
-### 🎥 Video Processing Tools
-- **Frame Extraction Script** - Extract frames from drone videos with precise control
-- **Batch Processing** - Process multiple videos in parallel
-- **Quality Control** - Automatic metadata extraction and quality settings
-- **Format Support** - MP4, MOV, AVI, and more
+## 📦 Prerequisites
 
-### 📚 Documentation
-- **Quick Start Guide** - Get running in minutes
-- **Complete Workflow** - From video capture to 3D models
-- **Usage Examples** - Real-world processing scenarios
-- **Troubleshooting** - Common issues and solutions
+### System Requirements
 
----
+- **OS**: Windows 10/11, Ubuntu 20.04+, macOS 10.14+
+- **RAM**: Minimum 8GB (16GB+ recommended)
+- **Disk Space**: 50GB+ free space
+- **CPU**: Multi-core processor (4+ cores recommended)
+- **GPU** (Optional): NVIDIA GPU with 4GB+ VRAM for accelerated processing
+  - See [GPU_SETUP.md](GPU_SETUP.md) for GPU acceleration guide
 
-## ⚡ Quick Start
+### Required Software
 
-### 1️⃣ Check Requirements
+1. **Docker Desktop** (Windows/macOS) or **Docker Engine** (Linux)
+   - [Download Docker Desktop](https://www.docker.com/products/docker-desktop)
+   - Docker Compose (included with Docker Desktop)
 
-**Windows (PowerShell as Admin)**:
+2. **Python 3.8+** (for video processing scripts)
+   - [Download Python](https://www.python.org/downloads/)
+
+3. **Git** (for cloning the repository)
+   - [Download Git](https://git-scm.com/downloads)
+
+## 🚀 Quick Start
+
+### Windows (PowerShell)
+
 ```powershell
-.\scripts\check-requirements.ps1
-```
+# Clone the repository
+git clone https://github.com/prashplus/WebODM-Setup.git
+cd WebODM-Setup
 
-**Linux/macOS**:
-```bash
-chmod +x scripts/*.sh
-./scripts/check-requirements.sh
-```
-
-### 2️⃣ Install
-
-**Windows**:
-```powershell
+# Run installation script
 .\scripts\install-windows.ps1
-```
 
-**Linux/macOS**:
-```bash
-./scripts/install-linux.sh
-```
-
-### 3️⃣ Start WebODM
-
-**Windows**:
-```powershell
+# Start WebODM
 .\scripts\start-webodm.ps1
 ```
 
-**Linux/macOS**:
+### Linux/macOS (Bash)
+
 ```bash
+# Clone the repository
+git clone https://github.com/prashplus/WebODM-Setup.git
+cd WebODM-Setup
+
+# Make scripts executable
+chmod +x scripts/*.sh
+
+# Run installation script
+./scripts/install-linux.sh
+
+# Start WebODM
 ./scripts/start-webodm.sh
 ```
 
-### 4️⃣ Access WebODM
+Access WebODM at: `http://localhost:8000`
 
-Open your browser: **http://localhost:8000**
+## 📥 Installation
 
-Create your admin account and start mapping!
+### Detailed Installation Steps
 
----
+1. **Install Docker**
 
-## 📖 Full Documentation
+   ```powershell
+   # Windows: Download and install Docker Desktop
+   # Ensure WSL2 is enabled for Windows
+   ```
 
-| Document | Description |
-|----------|-------------|
-| [QUICKSTART.md](QUICKSTART.md) | Step-by-step installation and first project |
-| [WORKFLOW.md](WORKFLOW.md) | Complete drone mapping workflow |
-| [EXAMPLES.md](EXAMPLES.md) | Processing configurations and use cases |
-| [CONTRIBUTING.md](CONTRIBUTING.md) | Contribution guidelines |
+2. **Clone Repository**
 
----
+   ```bash
+   git clone https://github.com/prashplus/WebODM-Setup.git
+   cd WebODM-Setup
+   ```
+
+3. **Install Python Dependencies**
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Configure Settings** (Optional)
+   - Edit `config/webodm-config.env` for custom settings
+   - Adjust Docker resources in Docker Desktop settings
+
+5. **Run Installation Script**
+   - Windows: `.\scripts\install-windows.ps1`
+   - Linux/Mac: `./scripts/install-linux.sh`
 
 ## 🎥 Drone Video Processing
 
-### Extract Frames from Video
+### Extract Frames from Drone Videos
+
+The repository includes scripts to extract frames from drone videos at specified intervals:
 
 ```bash
-python scripts/extract-frames.py \
-  --input DJI_0001.MP4 \
-  --output ./frames \
-  --fps 1 \
-  --quality 95
+# Basic usage
+python scripts/extract-frames.py --input video.mp4 --output ./frames --fps 1
+
+# Advanced usage with GPS data extraction
+python scripts/extract-frames.py --input video.mp4 --output ./frames --fps 2 --extract-gps
 ```
 
-**Parameters**:
-- `--input`: Video file path
-- `--output`: Output directory
+### Parameters
+
+- `--input`: Path to drone video file
+- `--output`: Output directory for extracted frames
 - `--fps`: Frames per second to extract (default: 1)
+- `--extract-gps`: Extract GPS metadata from video (if available)
+- `--format`: Output image format (default: jpg)
 - `--quality`: JPEG quality 1-100 (default: 95)
-- `--format`: Output format: jpg, png (default: jpg)
-- `--start`: Start time in seconds
-- `--end`: End time in seconds
 
-### Batch Process Multiple Videos
+### Batch Processing
+
+Process multiple videos at once:
 
 ```bash
-python scripts/batch-process.py \
-  --input-dir ./videos \
-  --output-dir ./frames \
-  --fps 1 \
-  --workers 4
+python scripts/batch-process.py --input-dir ./videos --output-dir ./frames
 ```
 
-**Process hundreds of videos efficiently with parallel processing!**
+## 💻 Usage
 
----
+### Starting WebODM
 
-## 🛠️ Available Scripts
+```bash
+# Windows
+.\scripts\start-webodm.ps1
 
-### Installation & Setup
-- `install-windows.ps1` / `install-linux.sh` - Install WebODM and dependencies
-- `check-requirements.ps1` / `check-requirements.sh` - Verify system requirements
+# Linux/Mac
+./scripts/start-webodm.sh
+```
 
-### WebODM Management
-- `start-webodm.ps1` / `start-webodm.sh` - Start WebODM services
-- `stop-webodm.ps1` / `stop-webodm.sh` - Stop WebODM services
-- `update-webodm.ps1` / `update-webodm.sh` - Update to latest version
-- `utils.ps1` / `utils.sh` - Utility commands (logs, backup, etc.)
+### Stopping WebODM
 
-### Video Processing
-- `extract-frames.py` - Extract frames from single video
-- `batch-process.py` - Batch process multiple videos
+```bash
+# Windows
+.\scripts\stop-webodm.ps1
 
----
+# Linux/Mac
+./scripts/stop-webodm.sh
+```
 
-## 💻 System Requirements
+### Updating WebODM
 
-### Minimum
-- **OS**: Windows 10/11, Ubuntu 20.04+, macOS 10.14+
-- **RAM**: 8GB
-- **CPU**: 4 cores
-- **Disk**: 50GB free space
-- **Docker**: Docker Desktop or Docker Engine
+```bash
+# Windows
+.\scripts\update-webodm.ps1
 
-### Recommended
-- **RAM**: 16GB+
-- **CPU**: 8+ cores
-- **Disk**: 100GB+ SSD
-- **GPU**: Optional (for advanced processing)
+# Linux/Mac
+./scripts/update-webodm.sh
+```
 
----
+### Creating a New Project
+
+1. Access WebODM at `http://localhost:8000`
+2. Create an account (first user becomes admin)
+3. Click "Add Project"
+4. Upload your processed drone images
+5. Configure processing options
+6. Start processing
+
+## ⚙️ Configuration
+
+### Environment Variables
+
+Edit `config/webodm-config.env`:
+
+```env
+# WebODM Configuration
+WO_PORT=8000
+WO_HOST=0.0.0.0
+WO_DEBUG=NO
+
+# Processing Options
+WO_DEFAULT_NODES=1
+WO_BROKER_URL=redis://broker
+
+# Storage
+MEDIA_ROOT=/webodm/app/media
+```
+
+### Docker Resources
+
+Adjust in Docker Desktop Settings:
+
+- **CPUs**: 4+ cores recommended
+- **Memory**: 8GB+ recommended
+- **Disk**: 50GB+ recommended
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+#### Docker not running
+
+```bash
+# Check Docker status
+docker --version
+docker ps
+
+# Start Docker Desktop (Windows/Mac)
+# Or start Docker service (Linux)
+sudo systemctl start docker
+```
+
+#### Port 8000 already in use
+
+Edit `config/webodm-config.env` and change `WO_PORT` to another port (e.g., 8080)
+
+#### Out of memory errors
+
+Increase Docker memory allocation in Docker Desktop settings
+
+#### Video processing errors
+
+```bash
+# Ensure FFmpeg is installed
+ffmpeg -version
+
+# Install if missing
+# Windows: choco install ffmpeg
+# Ubuntu: sudo apt install ffmpeg
+# macOS: brew install ffmpeg
+```
+
+### Logs
+
+View WebODM logs:
+
+```bash
+docker-compose logs -f webapp
+```
 
 ## 📁 Repository Structure
 
 ```
 WebODM-Setup/
-├── 📄 README.md                    # This file
-├── 📄 QUICKSTART.md                # Quick start guide
-├── 📄 WORKFLOW.md                  # Complete workflow
-├── 📄 EXAMPLES.md                  # Usage examples
-├── 📄 CONTRIBUTING.md              # Contribution guide
-├── 📄 LICENSE                      # MIT License
-├── 📄 docker-compose.yml           # Docker services
-├── 📄 requirements.txt             # Python dependencies
-├── 📄 .gitignore                   # Git ignore rules
-│
-├── 📁 config/                      # Configuration files
-│   ├── webodm-config.env          # WebODM environment variables
-│   └── processing-presets.json    # Processing presets
-│
-└── 📁 scripts/                     # All scripts
-    ├── install-windows.ps1        # Windows installer
-    ├── install-linux.sh           # Linux/macOS installer
-    ├── check-requirements.ps1     # Windows requirements check
-    ├── check-requirements.sh      # Linux/macOS requirements check
-    ├── start-webodm.ps1           # Start (Windows)
-    ├── start-webodm.sh            # Start (Linux/macOS)
-    ├── stop-webodm.ps1            # Stop (Windows)
-    ├── stop-webodm.sh             # Stop (Linux/macOS)
-    ├── update-webodm.ps1          # Update (Windows)
-    ├── update-webodm.sh           # Update (Linux/macOS)
-    ├── utils.ps1                  # Utilities (Windows)
-    ├── utils.sh                   # Utilities (Linux/macOS)
-    ├── extract-frames.py          # Frame extraction
-    └── batch-process.py           # Batch processing
+├── config/
+│   ├── webodm-config.env
+│   └── processing-presets.json
+├── scripts/
+│   ├── install-windows.ps1
+│   ├── install-linux.sh
+│   ├── start-webodm.ps1
+│   ├── start-webodm.sh
+│   ├── stop-webodm.ps1
+│   ├── stop-webodm.sh
+│   ├── update-webodm.ps1
+│   ├── update-webodm.sh
+│   ├── extract-frames.py
+│   └── batch-process.py
+├── docker-compose.yml
+├── requirements.txt
+├── .gitignore
+├── LICENSE
+└── README.md
 ```
-
----
-
-## 🎯 Common Use Cases
-
-### 🌾 Agriculture Mapping
-Extract frames at 0.5-1 FPS, process with Default preset, export orthophotos for NDVI analysis.
-
-### 🏗️ Construction Site Surveys
-Extract 1 FPS, High Quality preset, export DEMs and orthophotos for volume calculations.
-
-### 🏛️ 3D Building Models
-Extract 2 FPS from circular flights, High Quality preset, export textured 3D models.
-
-### 🔍 Infrastructure Inspection
-Extract 1-2 FPS, High Quality with texture, export 3D models for detailed inspection.
-
-See [EXAMPLES.md](EXAMPLES.md) for detailed configurations.
-
----
-
-## 🔧 Useful Commands
-
-### View Logs
-```bash
-docker-compose logs -f webapp
-```
-
-### Check Service Status
-```bash
-docker-compose ps
-```
-
-### Backup Data (Windows)
-```powershell
-.\scripts\utils.ps1 backup
-```
-
-### Backup Data (Linux/macOS)
-```bash
-./scripts/utils.sh backup
-```
-
-### Restart Services
-```bash
-docker-compose restart
-```
-
----
-
-## ❓ Troubleshooting
-
-### WebODM won't start
-```bash
-# Check Docker
-docker ps
-
-# Check logs
-docker-compose logs webapp
-```
-
-### Port 8000 in use
-Edit `config/webodm-config.env` and change `WO_PORT=8000` to another port.
-
-### Out of memory
-- Increase Docker memory allocation
-- Use Fast preset for testing
-- Process fewer images
-
-### Video processing errors
-Ensure Python dependencies are installed:
-```bash
-pip install -r requirements.txt
-```
-
-See [QUICKSTART.md](QUICKSTART.md) for more troubleshooting tips.
-
----
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-### Ways to Contribute
-- 🐛 Report bugs
-- 💡 Suggest features
-- 📝 Improve documentation
-- 🔧 Submit pull requests
-- ⭐ Star the repository
-
----
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## 📄 License
 
-This project is licensed under the MIT License - see [LICENSE](LICENSE) for details.
-
----
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🔗 Resources
 
-- **WebODM Documentation**: https://docs.webodm.org/
-- **OpenDroneMap**: https://opendronemap.org/
-- **Community Forum**: https://community.opendronemap.org/
-- **Docker Documentation**: https://docs.docker.com/
-
----
+- [WebODM Official Documentation](https://docs.webodm.org/)
+- [OpenDroneMap Community](https://community.opendronemap.org/)
+- [Docker Documentation](https://docs.docker.com/)
+- [Drone Mapping Best Practices](https://docs.opendronemap.org/flying/)
 
 ## 👨‍💻 Author
 
 **Prashant Piprotar**
-- GitHub: [@prashplus](https://github.com/prashplus)
 
 ---
 
-## ⭐ Show Your Support
-
-If this repository helped you, please give it a star! ⭐
-
-It helps others discover the project and motivates continued development.
-
----
-
-## 📮 Support
-
-- **Issues**: [GitHub Issues](https://github.com/prashplus/WebODM-Setup/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/prashplus/WebODM-Setup/discussions)
-- **Email**: Create an issue for support
-
----
-
-**Happy Mapping! 🗺️✨**
+⭐ If this repository helped you, please give it a star!

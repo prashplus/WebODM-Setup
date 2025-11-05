@@ -74,17 +74,25 @@ services:
       - webodm-data:/webodm/app/media
 
   node-odm-1:
-    image: opendronemap/nodeodm:latest
+    image: opendronemap/nodeodm:gpu
     container_name: webodm-node-odm-1
     restart: unless-stopped
     environment:
       - NODE_ENV=production
+      - GPU_ENABLED=true
     networks:
       - webodm-network
     ports:
       - "3000:3000"
     volumes:
       - nodeodm-data:/var/www/data
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
 
   node-register:
     image: opendronemap/webodm_webapp:latest

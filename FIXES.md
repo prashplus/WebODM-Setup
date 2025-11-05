@@ -126,3 +126,76 @@ After logging into WebODM:
 
 - **WebODM**: <http://localhost:8000>
 - **NodeODM**: <http://localhost:3000>
+
+## Issue 6: GPU Acceleration Setup
+
+**Problem:**
+NodeODM using CPU-only processing which is slower for large drone datasets.
+
+**Error Symptoms:**
+- Long processing times for photogrammetry tasks
+- CPU at 100% utilization during processing
+- No GPU utilization shown in nvidia-smi
+
+**Solution:**
+
+1. **Verified GPU availability:**
+   ```powershell
+   nvidia-smi
+   ```
+   Output confirmed:
+   - GPU: NVIDIA GeForce RTX 4060
+   - VRAM: 8GB
+   - CUDA: 13.0
+   - Driver: 581.80
+
+2. **Modified docker-compose.yml for GPU support:**
+   
+   Changed node-odm-1 service:
+   ```yaml
+   node-odm-1:
+     image: opendronemap/nodeodm:gpu  # Changed from :latest
+     environment:
+       - GPU_ENABLED=true  # Added
+     deploy:
+       resources:
+         reservations:
+           devices:
+             - driver: nvidia
+               count: 1
+               capabilities: [gpu]
+   ```
+
+3. **Applied changes:**
+   ```bash
+   docker-compose down
+   docker-compose pull node-odm-1
+   docker-compose up -d
+   ```
+
+**Expected Performance Improvements:**
+- 2-5x faster processing for typical datasets
+- Better memory efficiency for large point clouds
+- GPU utilization: 70-100% during active processing
+
+**Verification:**
+```bash
+# Check GPU access in container
+docker exec -it webodm-node-odm-1 nvidia-smi
+
+# Monitor GPU usage during processing
+nvidia-smi -l 2
+```
+
+**Documentation:**
+See [GPU_SETUP.md](GPU_SETUP.md) for complete GPU configuration guide.
+
+---
+
+**All systems operational! WebODM is ready for GPU-accelerated drone video processing.** 🚀
+
+For usage instructions, see:
+- [QUICKSTART.md](QUICKSTART.md) - Quick start guide
+- [WORKFLOW.md](WORKFLOW.md) - Complete workflow
+- [EXAMPLES.md](EXAMPLES.md) - Example commands
+- [GPU_SETUP.md](GPU_SETUP.md) - GPU acceleration guide
