@@ -86,6 +86,25 @@ services:
     volumes:
       - nodeodm-data:/var/www/data
 
+  node-register:
+    image: opendronemap/webodm_webapp:latest
+    container_name: webodm-node-register
+    restart: "no"
+    command: /bin/bash -c "sleep 15 && python /webodm/manage.py addnode node-odm-1 3000 --label 'NodeODM-1' || echo 'Node already registered'"
+    environment:
+      - WO_BROKER=redis://broker:6379/0
+      - WO_DEBUG=NO
+      - WO_DB_NAME=webodm_dev
+      - WO_DB_USER=postgres
+      - WO_DB_PASSWORD=postgres
+      - WO_DB_HOST=db
+      - WO_DB_PORT=5432
+    networks:
+      - webodm-network
+    depends_on:
+      - webapp
+      - node-odm-1
+
 networks:
   webodm-network:
     driver: bridge

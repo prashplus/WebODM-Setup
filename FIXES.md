@@ -90,6 +90,37 @@ All containers should show "Up" status:
 - webodm-webapp (WebODM interface)
 - webodm-worker (Background task processor)
 - webodm-node-odm-1 (Processing node)
+- webodm-node-register (one-time registration - will show "Exited")
+
+## Processing Node Registration
+
+The NodeODM processing node is **automatically registered** on first startup via the `node-register` service. This service:
+
+1. Waits for WebODM to be ready
+2. Registers the NodeODM node at `node-odm-1:3000`
+3. Exits after registration
+
+### Manual Registration (if needed)
+
+If you need to manually add a processing node:
+
+```bash
+docker exec -it webodm-webapp bash -c "python manage.py addnode <hostname> <port> --label '<Node Name>'"
+```
+
+Example:
+
+```bash
+docker exec -it webodm-webapp bash -c "python manage.py addnode node-odm-1 3000 --label 'NodeODM-1'"
+```
+
+### Verify Processing Nodes
+
+After logging into WebODM:
+
+1. Go to **Administration** → **Processing Nodes**
+2. You should see "NodeODM-1" listed
+3. Status should show as "online"
 
 ## Access
 
