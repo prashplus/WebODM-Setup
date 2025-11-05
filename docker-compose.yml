@@ -1,0 +1,97 @@
+services:
+  broker:
+    image: redis:7
+    container_name: webodm-broker
+    restart: unless-stopped
+    networks:
+      - webodm-network
+    volumes:
+      - redis-data:/data
+
+  db:
+    image: postgis/postgis:14-3.3
+    container_name: webodm-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=webodm_dev
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - webodm-network
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  worker:
+    image: opendronemap/webodm_webapp:latest
+    container_name: webodm-worker
+    restart: unless-stopped
+    command: /bin/bash -c "/webodm/wait-for-it.sh -t 0 broker:6379 -- /webodm/wait-for-it.sh -t 0 db:5432 -- /webodm/worker.sh start"
+    environment:
+      - WO_BROKER=redis://broker:6379/0
+      - WO_DEBUG=NO
+      - WO_DB_NAME=webodm_dev
+      - WO_DB_USER=postgres
+      - WO_DB_PASSWORD=postgres
+      - WO_DB_HOST=db
+      - WO_DB_PORT=5432
+    networks:
+      - webodm-network
+    depends_on:
+      - broker
+      - db
+    volumes:
+      - webodm-data:/webodm/app/media
+
+  webapp:
+    image: opendronemap/webodm_webapp:latest
+    container_name: webodm-webapp
+    restart: unless-stopped
+    command: /bin/bash -c "/webodm/wait-for-it.sh -t 0 broker:6379 -- /webodm/wait-for-it.sh -t 0 db:5432 -- /webodm/start.sh"
+    environment:
+      - WO_BROKER=redis://broker:6379/0
+      - WO_DEBUG=NO
+      - WO_HOST=0.0.0.0
+      - WO_PORT=8000
+      - WO_DB_NAME=webodm_dev
+      - WO_DB_USER=postgres
+      - WO_DB_PASSWORD=postgres
+      - WO_DB_HOST=db
+      - WO_DB_PORT=5432
+    networks:
+      - webodm-network
+    depends_on:
+      - broker
+      - db
+      - worker
+    ports:
+      - "8000:8000"
+    volumes:
+      - webodm-data:/webodm/app/media
+
+  node-odm-1:
+    image: opendronemap/nodeodm:latest
+    container_name: webodm-node-odm-1
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    networks:
+      - webodm-network
+    ports:
+      - "3000:3000"
+    volumes:
+      - nodeodm-data:/var/www/data
+
+networks:
+  webodm-network:
+    driver: bridge
+
+volumes:
+  redis-data:
+  postgres-data:
+  webodm-data:
+  nodeodm-data:

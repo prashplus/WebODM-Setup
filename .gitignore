@@ -1,0 +1,83 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Docker
+.docker/
+
+# WebODM data
+data/
+media/
+logs/
+*.log
+
+# Processed files
+frames/
+output/
+processed/
+videos/
+*.mp4
+*.avi
+*.mov
+*.MP4
+*.AVI
+*.MOV
+
+# Image files (exclude from git but keep structure)
+*.jpg
+*.jpeg
+*.png
+*.tif
+*.tiff
+*.JPG
+*.JPEG
+*.PNG
+*.TIF
+*.TIFF
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# OS files
+Thumbs.db
+.DS_Store

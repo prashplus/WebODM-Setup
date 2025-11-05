@@ -1,0 +1,47 @@
+{
+  "presets": [
+    {
+      "name": "Fast",
+      "description": "Fast processing, lower quality",
+      "options": {
+        "feature-quality": "lowest",
+        "min-num-features": "4000",
+        "matcher-neighbors": "4",
+        "pc-quality": "lowest"
+      }
+    },
+    {
+      "name": "Default",
+      "description": "Balanced quality and speed",
+      "options": {
+        "feature-quality": "medium",
+        "min-num-features": "8000",
+        "matcher-neighbors": "8",
+        "pc-quality": "medium"
+      }
+    },
+    {
+      "name": "High Quality",
+      "description": "High quality processing, slower",
+      "options": {
+        "feature-quality": "high",
+        "min-num-features": "16000",
+        "matcher-neighbors": "12",
+        "pc-quality": "high",
+        "dem-resolution": "2"
+      }
+    },
+    {
+      "name": "Ultra Quality",
+      "description": "Maximum quality, very slow",
+      "options": {
+        "feature-quality": "ultra",
+        "min-num-features": "32000",
+        "matcher-neighbors": "16",
+        "pc-quality": "ultra",
+        "dem-resolution": "1",
+        "orthophoto-resolution": "2"
+      }
+    }
+  ]
+}
