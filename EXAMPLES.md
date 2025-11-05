@@ -7,12 +7,14 @@ This document provides recommended configurations for different drone mapping sc
 **Use Case**: Fast preview of your data, checking coverage
 
 **Settings**:
+
 - Preset: Fast
 - Feature Quality: Lowest
 - Point Cloud Quality: Lowest
 - Expected Time: 10-20 minutes for 100 images
 
 **Frame Extraction**:
+
 ```bash
 python scripts/extract-frames.py --input video.mp4 --output ./frames --fps 0.5 --quality 85
 ```
@@ -22,6 +24,7 @@ python scripts/extract-frames.py --input video.mp4 --output ./frames --fps 0.5 -
 **Use Case**: General purpose mapping, good quality orthophotos
 
 **Settings**:
+
 - Preset: Default
 - Feature Quality: Medium
 - Point Cloud Quality: Medium
@@ -30,6 +33,7 @@ python scripts/extract-frames.py --input video.mp4 --output ./frames --fps 0.5 -
 - Expected Time: 1-2 hours for 100 images
 
 **Frame Extraction**:
+
 ```bash
 python scripts/extract-frames.py --input video.mp4 --output ./frames --fps 1 --quality 95
 ```
@@ -39,6 +43,7 @@ python scripts/extract-frames.py --input video.mp4 --output ./frames --fps 1 --q
 **Use Case**: Detailed 3D reconstruction, inspection, cultural heritage
 
 **Settings**:
+
 - Preset: High Quality
 - Feature Quality: High
 - Point Cloud Quality: High
@@ -48,6 +53,7 @@ python scripts/extract-frames.py --input video.mp4 --output ./frames --fps 1 --q
 - Expected Time: 3-6 hours for 100 images
 
 **Frame Extraction**:
+
 ```bash
 python scripts/extract-frames.py --input video.mp4 --output ./frames --fps 2 --quality 98 --format png
 ```
@@ -57,12 +63,14 @@ python scripts/extract-frames.py --input video.mp4 --output ./frames --fps 2 --q
 **Use Case**: Agriculture, forestry, large construction sites
 
 **Settings**:
+
 - Preset: Default (or Fast for very large areas)
 - Split Large Images: Yes
 - Max Concurrency: 2-4 (depending on RAM)
 - Tiles: Yes
 
 **Frame Extraction**:
+
 ```bash
 python scripts/batch-process.py --input-dir ./videos --output-dir ./frames --fps 0.5 --workers 2
 ```
@@ -72,12 +80,14 @@ python scripts/batch-process.py --input-dir ./videos --output-dir ./frames --fps
 **Use Case**: Building facades, towers, monuments
 
 **Settings**:
+
 - Preset: High Quality
 - Camera Lens: Perspective (or Brown if significant distortion)
 - Feature Quality: High
 - Optimize Disk Space: No
 
 **Frame Extraction**:
+
 ```bash
 python scripts/extract-frames.py --input video.mp4 --output ./frames --fps 1.5 --quality 95
 ```
@@ -85,17 +95,20 @@ python scripts/extract-frames.py --input video.mp4 --output ./frames --fps 1.5 -
 ## Hardware Recommendations
 
 ### Minimum (Fast Preset)
+
 - CPU: 4 cores
 - RAM: 8GB
 - Storage: 50GB SSD
 
 ### Recommended (Default/High Quality)
+
 - CPU: 8+ cores
 - RAM: 16GB+
 - Storage: 100GB+ SSD
 - GPU: Optional (not used by default)
 
 ### Professional (Ultra Quality)
+
 - CPU: 16+ cores
 - RAM: 32GB+
 - Storage: 500GB+ NVMe SSD

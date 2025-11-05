@@ -1,21 +1,25 @@
-# 📦 WebODM-Setup Installation Complete! 
+# 📦 WebODM-Setup Installation Complete
 
 Congratulations! Your WebODM setup repository is now fully configured with all the necessary tools for drone video processing and photogrammetry.
 
 ## 🎉 What's Been Set Up
 
 ### ✅ Core Files Created
+
 - ✓ Docker Compose configuration for WebODM
 - ✓ Python requirements for video processing
 - ✓ Git ignore rules for clean repository
 - ✓ MIT License file
 
 ### ✅ Configuration Files
+
 - ✓ WebODM environment configuration
 - ✓ Processing presets (Fast, Default, High Quality, Ultra)
 
 ### ✅ Installation Scripts
+
 **Windows (PowerShell)**:
+
 - ✓ `check-requirements.ps1` - System requirements checker
 - ✓ `install-windows.ps1` - Automated installation
 - ✓ `start-webodm.ps1` - Start services
@@ -24,6 +28,7 @@ Congratulations! Your WebODM setup repository is now fully configured with all t
 - ✓ `utils.ps1` - Utility commands
 
 **Linux/macOS (Bash)**:
+
 - ✓ `check-requirements.sh` - System requirements checker
 - ✓ `install-linux.sh` - Automated installation
 - ✓ `start-webodm.sh` - Start services
@@ -32,10 +37,12 @@ Congratulations! Your WebODM setup repository is now fully configured with all t
 - ✓ `utils.sh` - Utility commands
 
 ### ✅ Video Processing Scripts
+
 - ✓ `extract-frames.py` - Extract frames from drone videos
 - ✓ `batch-process.py` - Batch process multiple videos
 
 ### ✅ Documentation
+
 - ✓ `README.md` - Complete project documentation
 - ✓ `QUICKSTART.md` - Quick start guide
 - ✓ `WORKFLOW.md` - Complete drone mapping workflow
@@ -47,11 +54,13 @@ Congratulations! Your WebODM setup repository is now fully configured with all t
 ### Step 1: Verify System Requirements
 
 **Windows**:
+
 ```powershell
 .\scripts\check-requirements.ps1
 ```
 
 **Linux/macOS**:
+
 ```bash
 chmod +x scripts/*.sh
 ./scripts/check-requirements.sh
@@ -60,11 +69,13 @@ chmod +x scripts/*.sh
 ### Step 2: Install WebODM
 
 **Windows**:
+
 ```powershell
 .\scripts\install-windows.ps1
 ```
 
 **Linux/macOS**:
+
 ```bash
 ./scripts/install-linux.sh
 ```
@@ -72,29 +83,33 @@ chmod +x scripts/*.sh
 ### Step 3: Start WebODM
 
 **Windows**:
+
 ```powershell
 .\scripts\start-webodm.ps1
 ```
 
 **Linux/macOS**:
+
 ```bash
 ./scripts/start-webodm.sh
 ```
 
 ### Step 4: Access WebODM
 
-1. Open browser: http://localhost:8000
+1. Open browser: <http://localhost:8000>
 2. Create your admin account
 3. Start your first project!
 
 ## 📚 Learning Resources
 
 ### Quick Guides
+
 - Read `QUICKSTART.md` for step-by-step installation
 - Check `WORKFLOW.md` for complete drone mapping workflow
 - See `EXAMPLES.md` for real-world processing scenarios
 
 ### Video Processing
+
 ```bash
 # Extract frames from a single video
 python scripts/extract-frames.py --input video.mp4 --output ./frames --fps 1
@@ -106,6 +121,7 @@ python scripts/batch-process.py --input-dir ./videos --output-dir ./frames
 ## 🔧 Common Commands Reference
 
 ### WebODM Management
+
 ```bash
 # Start WebODM
 .\scripts\start-webodm.ps1   # Windows
@@ -127,6 +143,7 @@ docker-compose ps
 ```
 
 ### Video Processing
+
 ```bash
 # Extract frames (basic)
 python scripts/extract-frames.py --input video.mp4 --output ./frames
@@ -195,11 +212,11 @@ This setup is perfect for:
 
 ## 🔗 Useful Links
 
-- **WebODM Documentation**: https://docs.webodm.org/
-- **OpenDroneMap**: https://opendronemap.org/
-- **Community Forum**: https://community.opendronemap.org/
-- **ODM Arguments**: https://docs.opendronemap.org/arguments/
-- **Flight Planning**: https://docs.opendronemap.org/flying/
+- **WebODM Documentation**: <https://docs.webodm.org/>
+- **OpenDroneMap**: <https://opendronemap.org/>
+- **Community Forum**: <https://community.opendronemap.org/>
+- **ODM Arguments**: <https://docs.opendronemap.org/arguments/>
+- **Flight Planning**: <https://docs.opendronemap.org/flying/>
 
 ## 💡 Tips for Success
 

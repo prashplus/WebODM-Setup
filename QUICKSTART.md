@@ -5,6 +5,7 @@ Welcome to WebODM! This guide will help you get started quickly.
 ## Prerequisites Check
 
 Before starting, ensure you have:
+
 - [ ] Docker Desktop installed and running
 - [ ] At least 8GB RAM available
 - [ ] 50GB+ free disk space
@@ -16,49 +17,56 @@ Before starting, ensure you have:
 
 1. **Open PowerShell as Administrator**
 2. **Navigate to the repository**
+
    ```powershell
    cd d:\Github\WebODM-Setup
    ```
 
 3. **Run installation**
+
    ```powershell
    .\scripts\install-windows.ps1
    ```
 
 4. **Start WebODM**
+
    ```powershell
    .\scripts\start-webodm.ps1
    ```
 
 5. **Access WebODM**
-   - Open browser: http://localhost:8000
+   - Open browser: <http://localhost:8000>
    - Create your admin account
 
 ### Linux/macOS
 
 1. **Open Terminal**
 2. **Navigate to the repository**
+
    ```bash
    cd ~/WebODM-Setup
    ```
 
 3. **Make scripts executable**
+
    ```bash
    chmod +x scripts/*.sh
    ```
 
 4. **Run installation**
+
    ```bash
    ./scripts/install-linux.sh
    ```
 
 5. **Start WebODM**
+
    ```bash
    ./scripts/start-webodm.sh
    ```
 
 6. **Access WebODM**
-   - Open browser: http://localhost:8000
+   - Open browser: <http://localhost:8000>
    - Create your admin account
 
 ## Processing Your First Drone Video
@@ -85,7 +93,7 @@ python scripts/batch-process.py --input-dir ./videos --output-dir ./frames
 
 ## Creating Your First Project in WebODM
 
-1. **Login to WebODM** at http://localhost:8000
+1. **Login to WebODM** at <http://localhost:8000>
 
 2. **Create a New Project**
    - Click "Add Project"
@@ -116,6 +124,7 @@ python scripts/batch-process.py --input-dir ./videos --output-dir ./frames
 ## Common Commands
 
 ### Start WebODM
+
 ```bash
 # Windows
 .\scripts\start-webodm.ps1
@@ -125,6 +134,7 @@ python scripts/batch-process.py --input-dir ./videos --output-dir ./frames
 ```
 
 ### Stop WebODM
+
 ```bash
 # Windows
 .\scripts\stop-webodm.ps1
@@ -134,6 +144,7 @@ python scripts/batch-process.py --input-dir ./videos --output-dir ./frames
 ```
 
 ### Update WebODM
+
 ```bash
 # Windows
 .\scripts\update-webodm.ps1
@@ -143,11 +154,13 @@ python scripts/batch-process.py --input-dir ./videos --output-dir ./frames
 ```
 
 ### View Logs
+
 ```bash
 docker-compose logs -f webapp
 ```
 
 ### Check Status
+
 ```bash
 docker-compose ps
 ```
@@ -182,16 +195,19 @@ docker-compose ps
 ## Troubleshooting
 
 ### WebODM won't start
+
 - Check if Docker is running: `docker ps`
 - Check port 8000 is not in use
 - View logs: `docker-compose logs`
 
 ### Out of memory
+
 - Increase Docker memory allocation
 - Process fewer images at once
 - Use "Fast" preset
 
 ### Video processing fails
+
 - Install FFmpeg
 - Check video file is not corrupted
 - Ensure sufficient disk space
@@ -205,6 +221,7 @@ docker-compose ps
 ## Support
 
 For issues or questions:
+
 - Open an issue on GitHub
 - Check WebODM documentation
 - Visit OpenDroneMap community forum

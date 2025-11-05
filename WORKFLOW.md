@@ -15,6 +15,7 @@ Complete workflow from drone video capture to final 3D model/orthophoto using We
 ### Flight Planning
 
 **Grid Pattern** (Recommended for orthophotos):
+
 - Fly in parallel lines
 - 70-80% front overlap
 - 60-70% side overlap
@@ -22,6 +23,7 @@ Complete workflow from drone video capture to final 3D model/orthophoto using We
 - Use double grid for 3D (perpendicular passes)
 
 **Circular Pattern** (For 3D models):
+
 - Circle around subject
 - Multiple altitudes
 - Oblique angles (45-60°)
@@ -54,17 +56,20 @@ Complete workflow from drone video capture to final 3D model/orthophoto using We
 ### Choose Frame Rate
 
 **For Orthophotos (2D maps)**:
+
 - Slow flight (2-3 m/s): 0.5-1 FPS
 - Normal flight (4-5 m/s): 1-2 FPS
 - Fast flight (6+ m/s): 2-3 FPS
 
 **For 3D Models**:
+
 - Stationary subject: 1-2 FPS
 - Moving around subject: 2-3 FPS
 
 ### Extract Frames
 
 **Single Video**:
+
 ```bash
 # Windows
 python scripts\extract-frames.py --input DJI_0001.MP4 --output .\frames\project1 --fps 1 --quality 95
@@ -74,6 +79,7 @@ python scripts/extract-frames.py --input DJI_0001.MP4 --output ./frames/project1
 ```
 
 **Multiple Videos** (batch):
+
 ```bash
 # Windows
 python scripts\batch-process.py --input-dir .\videos --output-dir .\frames --fps 1
@@ -100,6 +106,7 @@ For a 5-minute video at 1 FPS: ~300 images
 ### Remove Bad Frames
 
 Delete frames that are:
+
 - Blurry or out of focus
 - Overexposed or underexposed
 - Showing only sky or water
@@ -123,7 +130,7 @@ Delete frames that are:
 
 ### Create Project
 
-1. Open browser: http://localhost:8000
+1. Open browser: <http://localhost:8000>
 2. Login (or create account)
 3. Click "Add Project"
 4. Enter:
@@ -145,21 +152,25 @@ Delete frames that are:
 ### Choose Processing Preset
 
 **Fast** (10-30 minutes):
+
 - For quick preview
 - Check data quality
 - Verify coverage
 
 **Default** (1-2 hours):
+
 - Good quality results
 - Most projects
 - Balanced speed/quality
 
 **High Quality** (3-6 hours):
+
 - Important projects
 - Detailed 3D models
 - Professional deliverables
 
 **Ultra** (6-12+ hours):
+
 - Maximum detail
 - Large scale prints
 - Heritage documentation
@@ -167,12 +178,14 @@ Delete frames that are:
 ### Configure Options
 
 **For Orthophotos**:
+
 - Use GPS
 - DEM: Yes
 - Orthophoto: Yes
 - 3D Model: Optional
 
 **For 3D Models**:
+
 - Use GPS
 - DEM: Optional
 - 3D Model: Yes
@@ -205,26 +218,31 @@ Delete frames that are:
 After processing completes, you can download:
 
 **Orthophoto** (GeoTIFF):
+
 - 2D map with geographic coordinates
 - Import into GIS software
 - Print as map
 
 **3D Model** (OBJ/PLY/LAS):
+
 - Textured 3D mesh
 - View in MeshLab, Blender, etc.
 - Use for measurements
 
 **Point Cloud** (PLY/LAS):
+
 - XYZ point data with colors
 - Use in CloudCompare
 - Further processing
 
 **Digital Elevation Model** (GeoTIFF):
+
 - Height information
 - Terrain analysis
 - Contour generation
 
 **Contours** (GeoJSON):
+
 - Elevation contours
 - Import into CAD/GIS
 
@@ -272,30 +290,38 @@ After processing completes, you can download:
 ## Troubleshooting
 
 ### Not Enough Overlap
+
 **Problem**: Processing fails or poor results
-**Solution**: 
+**Solution**:
+
 - Extract more frames (increase FPS)
 - Re-fly with more overlap
 
 ### Out of Memory
+
 **Problem**: Processing crashes
 **Solution**:
+
 - Use Fast preset
 - Process fewer images
 - Increase Docker memory
 - Split into multiple projects
 
 ### Poor Quality Results
+
 **Problem**: Blurry or distorted output
 **Solution**:
+
 - Check input image quality
 - Remove blurry frames
 - Use higher quality preset
 - Ensure good lighting in capture
 
 ### GPS Errors
+
 **Problem**: No georeferencing
 **Solution**:
+
 - Verify drone GPS was enabled
 - Use ground control points (GCPs)
 - Manual georeferencing in post

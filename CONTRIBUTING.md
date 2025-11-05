@@ -42,17 +42,20 @@ We welcome feature requests! Please include:
 ### Code Style
 
 **Python**:
+
 - Follow PEP 8
 - Use meaningful variable names
 - Add docstrings to functions
 - Include type hints where appropriate
 
 **PowerShell**:
+
 - Use approved verbs (Get-, Set-, New-, etc.)
 - Add comment-based help
 - Use proper error handling
 
 **Bash**:
+
 - Use shellcheck for validation
 - Add comments for complex logic
 - Use proper error handling with set -e
@@ -85,12 +88,14 @@ Before submitting a PR:
 ### Setup Steps
 
 1. **Fork and clone**
+
    ```bash
    git clone https://github.com/YOUR_USERNAME/WebODM-Setup.git
    cd WebODM-Setup
    ```
 
 2. **Create virtual environment** (optional)
+
    ```bash
    python -m venv venv
    source venv/bin/activate  # Linux/macOS
@@ -98,11 +103,13 @@ Before submitting a PR:
    ```
 
 3. **Install dependencies**
+
    ```bash
    pip install -r requirements.txt
    ```
 
 4. **Test installation**
+
    ```bash
    # Windows
    .\scripts\install-windows.ps1
@@ -184,6 +191,7 @@ test: Add unit tests for frame extraction
 ```
 
 Prefixes:
+
 - `feat:` New feature
 - `fix:` Bug fix
 - `docs:` Documentation only
@@ -227,6 +235,7 @@ By contributing, you agree that your contributions will be licensed under the MI
 ## 🙏 Recognition
 
 Contributors will be acknowledged in:
+
 - README.md contributors section
 - Release notes
 - Project documentation
