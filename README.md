@@ -7,6 +7,7 @@ A comprehensive setup repository for WebODM installation and drone video process
 ## 📋 Table of Contents
 
 - [Overview](#overview)
+- [Screenshots](#screenshots)
 - [Prerequisites](#prerequisites)
 - [Quick Start](#quick-start)
 - [Installation](#installation)
@@ -27,7 +28,29 @@ WebODM is an open-source drone mapping software built on OpenDroneMap. This repo
 - **Batch Processing Scripts** for multiple datasets
 - **Utility Scripts** for common tasks
 
-## 📦 Prerequisites
+## � Screenshots
+
+### Dashboard & Project View
+![WebODM Dashboard](sample-images/Screenshot%202025-11-05%20223107.png)
+*Main dashboard showing project overview and management interface*
+
+### Task Processing
+![Task Processing](sample-images/Screenshot%202025-11-05%20224419.png)
+*Processing interface with options and task configuration*
+
+### 3D Model Viewer
+![3D Model Viewer](sample-images/Screenshot%202025-11-05%20225155.png)
+*Interactive 3D model viewer with texture mapping*
+
+### Orthophoto Map
+![Orthophoto Map](sample-images/Screenshot%202025-11-05%20225219.png)
+*Generated orthophoto map visualization*
+
+### Processing Results
+![Processing Results](sample-images/Screenshot%202025-11-05%20225301.png)
+*Detailed processing results and outputs*
+
+## �📦 Prerequisites
 
 ### System Requirements
 

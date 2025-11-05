@@ -64,12 +64,10 @@ videos/
 # Image files (exclude from git but keep structure)
 *.jpg
 *.jpeg
-*.png
 *.tif
 *.tiff
 *.JPG
 *.JPEG
-*.PNG
 *.TIF
 *.TIFF
 
