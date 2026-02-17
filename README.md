@@ -54,12 +54,13 @@ WebODM is an open-source drone mapping software built on OpenDroneMap. This repo
 
 ### System Requirements
 
-- **OS**: Windows 10/11, Ubuntu 20.04+, macOS 10.14+
+- **OS**: Windows 10/11, Ubuntu 20.04+, macOS 10.14+ (including Apple Silicon)
 - **RAM**: Minimum 8GB (16GB+ recommended)
 - **Disk Space**: 50GB+ free space
 - **CPU**: Multi-core processor (4+ cores recommended)
 - **GPU** (Optional): NVIDIA GPU with 4GB+ VRAM for accelerated processing
   - See [GPU_SETUP.md](GPU_SETUP.md) for GPU acceleration guide
+  - **Note**: GPU acceleration is not available on macOS Apple Silicon (M1/M2/M3/M4). CPU-only processing is used instead.
 
 ### Required Software
 
@@ -105,6 +106,8 @@ chmod +x scripts/*.sh
 # Start WebODM
 ./scripts/start-webodm.sh
 ```
+
+> **Apple Silicon (M1/M2/M3/M4)**: The scripts automatically detect Apple Silicon and use the correct CPU-only Docker images (arm64 native). No extra steps needed. See [MACOS_APPLE_SILICON.md](MACOS_APPLE_SILICON.md) for details.
 
 Access WebODM at: `http://localhost:8000`
 
@@ -292,6 +295,7 @@ WebODM-Setup/
 │   ├── webodm-config.env
 │   └── processing-presets.json
 ├── scripts/
+│   ├── common.sh                # Shared helpers (compose detection, Apple Silicon)
 │   ├── install-windows.ps1
 │   ├── install-linux.sh
 │   ├── start-webodm.ps1
@@ -302,10 +306,12 @@ WebODM-Setup/
 │   ├── update-webodm.sh
 │   ├── extract-frames.py
 │   └── batch-process.py
-├── docker-compose.yml
+├── docker-compose.yml               # Default (Linux/Windows with GPU)
+├── docker-compose.apple-silicon.yml  # macOS Apple Silicon (CPU-only, arm64)
 ├── requirements.txt
 ├── .gitignore
 ├── LICENSE
+├── MACOS_APPLE_SILICON.md
 └── README.md
 ```
 

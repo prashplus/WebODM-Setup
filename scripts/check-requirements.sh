@@ -2,11 +2,9 @@
 # System Requirements Check for WebODM
 # Run this script to verify your system meets the requirements
 
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-CYAN='\033[0;36m'
-RED='\033[0;31m'
-NC='\033[0m'
+# Source common helpers (compose command & Apple Silicon detection)
+source "$(dirname "$0")/common.sh"
+detect_compose_cmd
 
 echo ""
 echo -e "${CYAN}========================================${NC}"
@@ -17,7 +15,7 @@ echo ""
 all_checks_passed=true
 
 # Check OS
-echo -e "${YELLOW}[1/8] Checking operating system...${NC}"
+echo -e "${YELLOW}[1/9] Checking operating system...${NC}"
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     echo -e "${GREEN}✓ Operating System: Linux${NC}"
 elif [[ "$OSTYPE" == "darwin"* ]]; then
@@ -27,8 +25,23 @@ else
     all_checks_passed=false
 fi
 
+# Check architecture (Apple Silicon detection)
+echo -e "${YELLOW}[2/9] Checking system architecture...${NC}"
+ARCH=$(uname -m)
+if [[ "$OSTYPE" == "darwin"* ]] && [[ "$ARCH" == "arm64" ]]; then
+    echo -e "${GREEN}✓ Architecture: Apple Silicon (arm64)${NC}"
+    echo -e "${CYAN}  Note: GPU acceleration (NVIDIA) is not available on Apple Silicon.${NC}"
+    echo -e "${CYAN}  CPU-only NodeODM will be used (native arm64 image).${NC}"
+elif [[ "$ARCH" == "x86_64" ]] || [[ "$ARCH" == "amd64" ]]; then
+    echo -e "${GREEN}✓ Architecture: x86_64${NC}"
+elif [[ "$ARCH" == "aarch64" ]]; then
+    echo -e "${GREEN}✓ Architecture: aarch64 (ARM 64-bit)${NC}"
+else
+    echo -e "${YELLOW}⚠ Architecture: $ARCH (may have limited Docker image support)${NC}"
+fi
+
 # Check bash version
-echo -e "${YELLOW}[2/8] Checking bash version...${NC}"
+echo -e "${YELLOW}[3/9] Checking bash version...${NC}"
 bash_version=${BASH_VERSION%%[^0-9]*}
 if [ "$bash_version" -ge 4 ]; then
     echo -e "${GREEN}✓ Bash version: $BASH_VERSION${NC}"
@@ -37,18 +50,22 @@ else
 fi
 
 # Check Docker installation
-echo -e "${YELLOW}[3/8] Checking Docker installation...${NC}"
+echo -e "${YELLOW}[4/9] Checking Docker installation...${NC}"
 if command -v docker &> /dev/null; then
     docker_version=$(docker --version)
     echo -e "${GREEN}✓ Docker installed: $docker_version${NC}"
     
     # Check if Docker is running
-    echo -e "${YELLOW}[4/8] Checking if Docker is running...${NC}"
+    echo -e "${YELLOW}[5/9] Checking if Docker is running...${NC}"
     if docker ps &> /dev/null; then
         echo -e "${GREEN}✓ Docker is running${NC}"
     else
         echo -e "${RED}✗ Docker is not running${NC}"
-        echo -e "${YELLOW}  Start with: sudo systemctl start docker (Linux)${NC}"
+        if [[ "$OSTYPE" == "darwin"* ]]; then
+            echo -e "${YELLOW}  Start Docker Desktop from Applications${NC}"
+        else
+            echo -e "${YELLOW}  Start with: sudo systemctl start docker${NC}"
+        fi
         all_checks_passed=false
     fi
 else
@@ -58,17 +75,21 @@ else
 fi
 
 # Check Docker Compose
-echo -e "${YELLOW}[5/8] Checking Docker Compose...${NC}"
-if command -v docker-compose &> /dev/null; then
+echo -e "${YELLOW}[6/9] Checking Docker Compose...${NC}"
+if docker compose version &> /dev/null; then
+    compose_version=$(docker compose version)
+    echo -e "${GREEN}✓ Docker Compose (v2 plugin) installed: $compose_version${NC}"
+elif command -v docker-compose &> /dev/null; then
     compose_version=$(docker-compose --version)
-    echo -e "${GREEN}✓ Docker Compose installed: $compose_version${NC}"
+    echo -e "${GREEN}✓ Docker Compose (standalone) installed: $compose_version${NC}"
 else
     echo -e "${RED}✗ Docker Compose not found${NC}"
+    echo -e "${YELLOW}  Install Docker Desktop (includes Compose) or install docker-compose separately.${NC}"
     all_checks_passed=false
 fi
 
 # Check Python installation
-echo -e "${YELLOW}[6/8] Checking Python installation...${NC}"
+echo -e "${YELLOW}[7/9] Checking Python installation...${NC}"
 if command -v python3 &> /dev/null; then
     python_version=$(python3 --version)
     echo -e "${GREEN}✓ Python installed: $python_version${NC}"
@@ -85,12 +106,12 @@ else
 fi
 
 # Check available RAM
-echo -e "${YELLOW}[7/8] Checking system RAM...${NC}"
+echo -e "${YELLOW}[8/9] Checking system RAM...${NC}"
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     ram_kb=$(grep MemTotal /proc/meminfo | awk '{print $2}')
     ram_gb=$((ram_kb / 1024 / 1024))
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-    ram_bytes=$(sysctl hw.memsize | awk '{print $2}')
+    ram_bytes=$(sysctl -n hw.memsize)
     ram_gb=$((ram_bytes / 1024 / 1024 / 1024))
 fi
 
@@ -101,8 +122,14 @@ else
 fi
 
 # Check available disk space
-echo -e "${YELLOW}[8/8] Checking available disk space...${NC}"
-disk_avail=$(df -BG . | tail -1 | awk '{print $4}' | sed 's/G//')
+echo -e "${YELLOW}[9/9] Checking available disk space...${NC}"
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS: df does not support -BG; use 512-byte blocks and convert
+    disk_avail_blocks=$(df . | tail -1 | awk '{print $4}')
+    disk_avail=$((disk_avail_blocks / 1024 / 1024 / 2))
+else
+    disk_avail=$(df -BG . | tail -1 | awk '{print $4}' | sed 's/G//')
+fi
 if [ "$disk_avail" -ge 50 ]; then
     echo -e "${GREEN}✓ Available disk space: ${disk_avail}GB${NC}"
 else

@@ -1,11 +1,9 @@
 #!/bin/bash
 # Start WebODM - Linux/macOS Script
 
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-CYAN='\033[0;36m'
-RED='\033[0;31m'
-NC='\033[0m'
+# Source common helpers (compose command & Apple Silicon detection)
+source "$(dirname "$0")/common.sh"
+init_webodm
 
 echo -e "${CYAN}========================================${NC}"
 echo -e "${CYAN}Starting WebODM...${NC}"
@@ -19,9 +17,9 @@ if ! docker ps &> /dev/null; then
     exit 1
 fi
 
-# Start WebODM using docker-compose
+# Start WebODM using docker compose
 echo -e "${YELLOW}Starting WebODM containers...${NC}"
-if docker-compose up -d; then
+if run_compose up -d; then
     echo ""
     echo -e "${GREEN}✓ WebODM is starting...${NC}"
     echo ""
@@ -33,7 +31,7 @@ if docker-compose up -d; then
     echo -e "${GREEN}NodeODM API will be available at:${NC}"
     echo "http://localhost:3000"
     echo ""
-    echo -e "${CYAN}To view logs: docker-compose logs -f webapp${NC}"
+    echo -e "${CYAN}To view logs: ${COMPOSE_CMD[*]} -f $COMPOSE_FILE logs -f webapp${NC}"
     echo -e "${CYAN}To stop: ./scripts/stop-webodm.sh${NC}"
 else
     echo -e "${RED}✗ Failed to start WebODM${NC}"

@@ -2,11 +2,9 @@
 # WebODM Utilities - Linux/macOS Script
 # Collection of useful commands for managing WebODM
 
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-CYAN='\033[0;36m'
-RED='\033[0;31m'
-NC='\033[0m'
+# Source common helpers (compose command & Apple Silicon detection)
+source "$(dirname "$0")/common.sh"
+init_webodm
 
 show_menu() {
     echo ""
@@ -25,12 +23,12 @@ show_menu() {
 
 show_logs() {
     echo -e "${YELLOW}📋 Showing WebODM logs (Ctrl+C to exit)...${NC}"
-    docker-compose logs -f webapp
+    run_compose logs -f webapp
 }
 
 show_status() {
     echo -e "${YELLOW}📊 WebODM Service Status:${NC}"
-    docker-compose ps
+    run_compose ps
     echo ""
     echo -e "${YELLOW}💾 Disk Usage:${NC}"
     docker system df
@@ -63,7 +61,7 @@ backup_data() {
 
 restart_services() {
     echo -e "${YELLOW}🔄 Restarting WebODM services...${NC}"
-    docker-compose restart
+    run_compose restart
     echo -e "${GREEN}✓ Services restarted${NC}"
 }
 

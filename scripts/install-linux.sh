@@ -1,17 +1,14 @@
 #!/bin/bash
 # WebODM Installation Script for Linux/macOS
 
+# Source common helpers (compose command & Apple Silicon detection)
+source "$(dirname "$0")/common.sh"
+init_webodm
+
 echo "========================================"
 echo "WebODM Setup - Linux/macOS Installation"
 echo "========================================"
 echo ""
-
-# Colors
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-CYAN='\033[0;36m'
-NC='\033[0m' # No Color
 
 # Check if running as root (not recommended for Docker)
 if [ "$EUID" -eq 0 ]; then 
@@ -46,14 +43,15 @@ fi
 
 # Check Docker Compose installation
 echo -e "${YELLOW}[3/5] Checking Docker Compose installation...${NC}"
-if command -v docker-compose &> /dev/null; then
+if docker compose version &> /dev/null; then
+    COMPOSE_VERSION=$(docker compose version)
+    echo -e "${GREEN}✓ Docker Compose (v2 plugin) is installed: $COMPOSE_VERSION${NC}"
+elif command -v docker-compose &> /dev/null; then
     COMPOSE_VERSION=$(docker-compose --version)
-    echo -e "${GREEN}✓ Docker Compose is installed: $COMPOSE_VERSION${NC}"
+    echo -e "${GREEN}✓ Docker Compose (standalone) is installed: $COMPOSE_VERSION${NC}"
 else
     echo -e "${RED}✗ Docker Compose is not installed!${NC}"
-    echo -e "${YELLOW}Install Docker Compose:${NC}"
-    echo "Ubuntu: sudo apt install docker-compose"
-    echo "macOS: brew install docker-compose"
+    echo -e "${YELLOW}Install Docker Desktop (includes Compose) or install docker-compose separately.${NC}"
     exit 1
 fi
 
@@ -74,11 +72,17 @@ else
     echo "Install: sudo apt install python3 python3-pip (Ubuntu) or brew install python3 (macOS)"
 fi
 
+# Detect architecture
+if [[ "$OSTYPE" == "darwin"* ]] && [[ "$(uname -m)" == "arm64" ]]; then
+    echo -e "${CYAN}[INFO] macOS Apple Silicon detected — GPU acceleration is not available.${NC}"
+    echo -e "${CYAN}[INFO] Using CPU-only NodeODM image (arm64 native).${NC}"
+fi
+
 # Pull Docker images
 echo -e "${YELLOW}[5/5] Pulling WebODM Docker images...${NC}"
 echo -e "${CYAN}This may take several minutes depending on your internet connection...${NC}"
 
-if docker-compose pull; then
+if run_compose pull; then
     echo -e "${GREEN}✓ Docker images pulled successfully${NC}"
 else
     echo -e "${RED}✗ Failed to pull Docker images${NC}"
